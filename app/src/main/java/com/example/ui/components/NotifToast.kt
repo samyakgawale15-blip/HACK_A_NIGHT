@@ -66,13 +66,13 @@ fun NotifToast(
                     modifier = Modifier
                         .size(28.dp)
                         .clip(CircleShape)
-                        .background(NeonLime),
+                        .background(com.example.ui.theme.PhonePeAccentPurple),
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
                         text = "✦",
                         fontFamily = HelveticaFontFamily,
-                        color = Color.Black,
+                        color = Color.White,
                         fontSize = 13.sp,
                         fontWeight = FontWeight.Bold
                     )

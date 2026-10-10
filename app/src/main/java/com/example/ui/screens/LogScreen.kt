@@ -72,7 +72,9 @@ import com.example.ui.theme.GlassSurfaceHigh
 import com.example.ui.theme.HelveticaFontFamily
 import com.example.ui.theme.NeonLime
 import com.example.ui.theme.ObsidianBlack
+import com.example.ui.theme.PhonePeAccentPurple
 import com.example.ui.theme.PhonePeLightPurple
+import com.example.ui.theme.PhonePePurple
 import com.example.ui.theme.TextMuted
 import com.example.ui.theme.TextPrimary
 import com.example.ui.theme.TextSecondary
@@ -268,7 +270,7 @@ fun LogScreen(
                                         modifier = Modifier
                                             .size(54.dp)
                                             .clip(CircleShape)
-                                            .background(if (isTorchOn) NeonLime else Color(0x26FFFFFF))
+                                            .background(if (isTorchOn) PhonePeLightPurple else Color(0x26FFFFFF))
                                             .border(1.dp, Color(0x33FFFFFF), CircleShape)
                                             .clickable { isTorchOn = !isTorchOn }
                                             .testTag("torch_button"),
@@ -277,7 +279,7 @@ fun LogScreen(
                                         Icon(
                                             imageVector = Icons.Default.FlashlightOn,
                                             contentDescription = "Torch",
-                                            tint = if (isTorchOn) Color.Black else Color.White,
+                                            tint = Color.White,
                                             modifier = Modifier.size(24.dp)
                                         )
                                     }
@@ -638,7 +640,7 @@ fun LogScreen(
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .clip(RoundedCornerShape(18.dp))
-                                    .background(if (isComplete) NeonLime else Color(0x33E4FF73))
+                                    .background(if (isComplete) PhonePePurple else Color(0x288B5CF6))
                                     .clickable(enabled = isComplete) { onSubmitLog() }
                                     .padding(vertical = 16.dp)
                                     .testTag("submit_log_button"),
@@ -647,7 +649,7 @@ fun LogScreen(
                                 Text(
                                     text = if (uiState.currentTxnIndex < uiState.tempData.size - 1) "Analyze & Next Payment ➡️" else "Analyze & Save",
                                     fontFamily = HelveticaFontFamily,
-                                    color = Color.Black,
+                                    color = Color.White,
                                     fontSize = 14.sp,
                                     fontWeight = FontWeight.Bold,
                                     letterSpacing = (-0.2).sp
@@ -697,7 +699,7 @@ fun LogScreen(
                             shape = RoundedCornerShape(14.dp),
                             textStyle = TextStyle(fontFamily = HelveticaFontFamily, color = TextPrimary, fontSize = 14.sp),
                             colors = OutlinedTextFieldDefaults.colors(
-                                focusedBorderColor = NeonLime,
+                                focusedBorderColor = PhonePeLightPurple,
                                 unfocusedBorderColor = BorderMedium,
                                 focusedContainerColor = Color(0x1FFFFFFF),
                                 unfocusedContainerColor = Color(0x0FFFFFFF)
@@ -716,7 +718,7 @@ fun LogScreen(
                             shape = RoundedCornerShape(14.dp),
                             textStyle = TextStyle(fontFamily = HelveticaFontFamily, color = TextPrimary, fontSize = 14.sp),
                             colors = OutlinedTextFieldDefaults.colors(
-                                focusedBorderColor = NeonLime,
+                                focusedBorderColor = PhonePeLightPurple,
                                 unfocusedBorderColor = BorderMedium,
                                 focusedContainerColor = Color(0x1FFFFFFF),
                                 unfocusedContainerColor = Color(0x0FFFFFFF)
@@ -732,7 +734,7 @@ fun LogScreen(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .clip(RoundedCornerShape(16.dp))
-                                .background(if (canSubmit) NeonLime else Color(0x33E4FF73))
+                                .background(if (canSubmit) PhonePePurple else Color(0x288B5CF6))
                                 .clickable(enabled = canSubmit) {
                                     showManualDialog = false
                                     onManualNext(manualPayee, manualAmount)
@@ -743,7 +745,7 @@ fun LogScreen(
                             Text(
                                 text = "Continue to Categorize",
                                 fontFamily = HelveticaFontFamily,
-                                color = Color.Black,
+                                color = Color.White,
                                 fontSize = 14.sp,
                                 fontWeight = FontWeight.Bold
                             )
@@ -772,7 +774,7 @@ fun LogScreen(
                             modifier = Modifier
                                 .size(20.dp)
                                 .clip(CircleShape)
-                                .background(NeonLime)
+                                .background(PhonePeAccentPurple)
                         )
                     }
 

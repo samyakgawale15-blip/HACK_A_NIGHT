@@ -48,6 +48,7 @@ import com.example.ui.theme.NeonLime
 import com.example.ui.theme.ObsidianBlack
 import com.example.ui.theme.PhonePeLightPurple
 import com.example.ui.theme.PhonePePurple
+import com.example.ui.theme.SoftLavender
 import com.example.ui.theme.TextMuted
 import com.example.ui.theme.TextPrimary
 import com.example.ui.theme.TextSecondary
@@ -98,9 +99,9 @@ fun FriendsScreen(
 
                     GlassBadge(
                         text = "UPI SPLIT",
-                        textColor = NeonLime,
-                        borderColor = Color(0x33E4FF73),
-                        backgroundColor = Color(0x1AE4FF73)
+                        textColor = SoftLavender,
+                        borderColor = Color(0x338B5CF6),
+                        backgroundColor = Color(0x1A8B5CF6)
                     )
                 }
 
@@ -493,11 +494,11 @@ fun FriendsScreen(
                                         )
                                     }
 
-                                    // Settle Neon Lime Pill
+                                    // Settle PhonePe Purple Pill
                                     Box(
                                         modifier = Modifier
                                             .clip(RoundedCornerShape(8.dp))
-                                            .background(NeonLime)
+                                            .background(PhonePePurple)
                                             .clickable { onSettleFriend(txn) }
                                             .padding(horizontal = 9.dp, vertical = 4.dp)
                                             .testTag("settle_friend_${txn.name}"),
@@ -506,7 +507,7 @@ fun FriendsScreen(
                                         Text(
                                             text = "SETTLE ⚡",
                                             fontFamily = HelveticaFontFamily,
-                                            color = Color.Black,
+                                            color = Color.White,
                                             fontSize = 9.sp,
                                             fontWeight = FontWeight.Bold,
                                             letterSpacing = 0.5.sp

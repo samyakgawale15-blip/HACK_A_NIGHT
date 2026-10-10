@@ -70,10 +70,12 @@ import com.example.ui.theme.GlassBorderGradient
 import com.example.ui.theme.HelveticaFontFamily
 import com.example.ui.theme.NeonLime
 import com.example.ui.theme.ObsidianBlack
+import com.example.ui.theme.PhonePeAccentPurple
 import com.example.ui.theme.PhonePeDarkHeader
 import com.example.ui.theme.PhonePeHeroGradient
 import com.example.ui.theme.PhonePeLightPurple
 import com.example.ui.theme.PhonePePurple
+import com.example.ui.theme.SoftLavender
 import com.example.ui.theme.TextMuted
 import com.example.ui.theme.TextPrimary
 import com.example.ui.theme.TextSecondary
@@ -139,9 +141,9 @@ fun RunwayScreen(
                         Spacer(modifier = Modifier.width(6.dp))
                         GlassBadge(
                             text = "XAI ENGINE",
-                            textColor = NeonLime,
-                            borderColor = Color(0x66CCFF00),
-                            backgroundColor = Color(0x1ACCFF00)
+                            textColor = EmeraldGreen,
+                            borderColor = EmeraldGreen.copy(alpha = 0.4f),
+                            backgroundColor = EmeraldGreen.copy(alpha = 0.15f)
                         )
                     }
                     Text(
@@ -397,7 +399,7 @@ fun RunwayNativeDashboard(
                                 .clip(CircleShape)
                                 .background(
                                     Brush.horizontalGradient(
-                                        listOf(EmeraldGreen, NeonLime, PhonePeLightPurple)
+                                        listOf(EmeraldGreen, PhonePeAccentPurple, PhonePeLightPurple)
                                     )
                                 )
                         )
@@ -476,7 +478,7 @@ fun RunwayNativeDashboard(
                         Text(
                             text = "${cutImpulseSlider.roundToInt()}%",
                             fontFamily = HelveticaFontFamily,
-                            color = NeonLime,
+                            color = SoftLavender,
                             fontSize = 12.sp,
                             fontWeight = FontWeight.Bold
                         )
@@ -487,8 +489,8 @@ fun RunwayNativeDashboard(
                         valueRange = 0f..60f,
                         steps = 6,
                         colors = SliderDefaults.colors(
-                            thumbColor = NeonLime,
-                            activeTrackColor = NeonLime,
+                            thumbColor = PhonePeLightPurple,
+                            activeTrackColor = PhonePeLightPurple,
                             inactiveTrackColor = Color(0x22FFFFFF)
                         )
                     )
@@ -507,7 +509,7 @@ fun RunwayNativeDashboard(
                         Text(
                             text = "+${curfewSlider.roundToInt()} Days",
                             fontFamily = HelveticaFontFamily,
-                            color = NeonLime,
+                            color = SoftLavender,
                             fontSize = 12.sp,
                             fontWeight = FontWeight.Bold
                         )
@@ -851,7 +853,7 @@ fun RunwayNativeDashboard(
                                 horizontalArrangement = Arrangement.SpaceBetween
                             ) {
                                 Text(text = "Autonomous Savings Velocity", color = TextSecondary, fontSize = 12.sp)
-                                Text(text = "₹180 / day", color = NeonLime, fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                                Text(text = "₹180 / day", color = EmeraldGreen, fontSize = 12.sp, fontWeight = FontWeight.Bold)
                             }
                         }
                     }
@@ -864,9 +866,9 @@ fun RunwayNativeDashboard(
                     GlassCard(
                         modifier = Modifier.fillMaxWidth(),
                         shape = RoundedCornerShape(20.dp),
-                        backgroundColor = Color(0xFF1E1735),
+                        backgroundColor = Color(0xFF161124),
                         borderBrush = Brush.linearGradient(
-                            listOf(Color(0x80CCFF00), PhonePeLightPurple, Color(0x30FFFFFF))
+                            listOf(Color(0x508B5CF6), PhonePeLightPurple, Color(0x20FFFFFF))
                         )
                     ) {
                         Column(modifier = Modifier.padding(16.dp)) {
@@ -888,9 +890,9 @@ fun RunwayNativeDashboard(
                                 }
                                 GlassBadge(
                                     text = "100% FREE",
-                                    textColor = NeonLime,
-                                    borderColor = Color(0x66CCFF00),
-                                    backgroundColor = Color(0x1ACCFF00)
+                                    textColor = EmeraldGreen,
+                                    borderColor = EmeraldGreen.copy(alpha = 0.4f),
+                                    backgroundColor = EmeraldGreen.copy(alpha = 0.15f)
                                 )
                             }
                             Spacer(modifier = Modifier.height(8.dp))
@@ -1044,16 +1046,16 @@ fun RunwayNativeDashboard(
                     GlassCard(
                         modifier = Modifier.fillMaxWidth(),
                         shape = RoundedCornerShape(18.dp),
-                        backgroundColor = Color(0xFF120E22),
+                        backgroundColor = Color(0xFF140F22),
                         borderBrush = Brush.linearGradient(
-                            listOf(Color(0x33FFFFFF), Color(0x22CCFF00))
+                            listOf(Color(0x33FFFFFF), Color(0x228B5CF6))
                         )
                     ) {
                         Column(modifier = Modifier.padding(16.dp)) {
                             Text(
                                 text = "🛠️ Recommended Step-by-Step Training Recipe",
                                 fontFamily = HelveticaFontFamily,
-                                color = NeonLime,
+                                color = SoftLavender,
                                 fontSize = 13.sp,
                                 fontWeight = FontWeight.Bold
                             )

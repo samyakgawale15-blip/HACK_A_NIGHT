@@ -185,7 +185,7 @@ fun PatternAnalysisModal(
                         modifier = Modifier
                             .fillMaxWidth()
                             .clip(RoundedCornerShape(18.dp))
-                            .background(NeonLime)
+                            .background(com.example.ui.theme.PhonePePurple)
                             .clickable { onAnalyze() }
                             .padding(vertical = 15.dp)
                             .testTag("analyze_habits_button"),
@@ -194,7 +194,7 @@ fun PatternAnalysisModal(
                         Text(
                             text = "Analyze My Habits",
                             fontFamily = HelveticaFontFamily,
-                            color = Color.Black,
+                            color = Color.White,
                             fontSize = 14.sp,
                             fontWeight = FontWeight.Bold,
                             letterSpacing = (-0.2).sp
@@ -213,7 +213,7 @@ fun PatternAnalysisModal(
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         CircularProgressIndicator(
-                            color = NeonLime,
+                            color = com.example.ui.theme.PhonePeLightPurple,
                             modifier = Modifier.size(36.dp),
                             strokeWidth = 2.5.dp
                         )

@@ -28,13 +28,20 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Badge
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.HelpOutline
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowUp
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Psychology
 import androidx.compose.material.icons.filled.QrCodeScanner
 import androidx.compose.material.icons.filled.Tune
 import androidx.compose.material.icons.filled.VerifiedUser
+import androidx.compose.material.icons.filled.TrendingUp
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderDefaults
@@ -57,6 +64,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.data.models.TransactionItem
+import com.example.ui.components.BusinessCategoryTile
+import com.example.ui.components.BusinessQuickActionsGrid
 import com.example.ui.components.CategoryIcon
 import com.example.ui.components.GlassBadge
 import com.example.ui.components.GlassCard
@@ -74,6 +83,7 @@ import com.example.ui.theme.PhonePeDarkHeader
 import com.example.ui.theme.PhonePeHeroGradient
 import com.example.ui.theme.PhonePeLightPurple
 import com.example.ui.theme.PhonePePurple
+import com.example.ui.theme.SoftLavender
 import com.example.ui.theme.TextMuted
 import com.example.ui.theme.TextPrimary
 import com.example.ui.theme.TextSecondary
@@ -92,7 +102,9 @@ fun HomeScreen(
     onOpenKyc: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
-    var showBudgetSlider by remember { mutableStateOf(true) }
+    var showBudgetSlider by remember { mutableStateOf(false) }
+    var showTopMenu by remember { mutableStateOf(false) }
+    var showCategoryMenu by remember { mutableStateOf(false) }
     var tempAllowanceSlider by remember(uiState.userData.allowance) {
         mutableFloatStateOf(uiState.userData.allowance.toFloat())
     }
@@ -181,62 +193,18 @@ fun HomeScreen(
                             }
                         }
 
-                        // Right PhonePe Action Buttons (KYC, QR Scanner, Notifications, Help)
+                        // Right PhonePe Action Buttons (QR Scanner & Submenu Overflow)
                         Row(
-                            horizontalArrangement = Arrangement.spacedBy(7.dp),
+                            horizontalArrangement = Arrangement.spacedBy(8.dp),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            // KYC Behavioral Identity Icon & Status Badge
-                            Box(
-                                modifier = Modifier
-                                    .clip(RoundedCornerShape(18.dp))
-                                    .background(
-                                        if (uiState.userData.isBehavioralKycCompleted) Color(0x2E00D09C) else Color(0x2ECCFF00)
-                                    )
-                                    .border(
-                                        1.dp,
-                                        if (uiState.userData.isBehavioralKycCompleted) EmeraldGreen.copy(alpha = 0.6f) else NeonLime.copy(alpha = 0.7f),
-                                        RoundedCornerShape(18.dp)
-                                    )
-                                    .clickable { onOpenKyc() }
-                                    .padding(horizontal = 8.dp, vertical = 6.dp)
-                                    .testTag("home_kyc_badge_button"),
-                                contentAlignment = Alignment.Center
-                            ) {
-                                Row(verticalAlignment = Alignment.CenterVertically) {
-                                    Icon(
-                                        imageVector = if (uiState.userData.isBehavioralKycCompleted) Icons.Default.VerifiedUser else Icons.Default.Badge,
-                                        contentDescription = "KYC Status",
-                                        tint = if (uiState.userData.isBehavioralKycCompleted) EmeraldGreen else NeonLime,
-                                        modifier = Modifier.size(15.dp)
-                                    )
-                                    Spacer(modifier = Modifier.width(4.dp))
-                                    Text(
-                                        text = if (uiState.userData.isBehavioralKycCompleted) "KYC 100%" else "KYC",
-                                        fontFamily = HelveticaFontFamily,
-                                        color = Color.White,
-                                        fontSize = 10.sp,
-                                        fontWeight = FontWeight.Bold
-                                    )
-                                    if (!uiState.userData.isBehavioralKycCompleted) {
-                                        Spacer(modifier = Modifier.width(4.dp))
-                                        Box(
-                                            modifier = Modifier
-                                                .size(6.dp)
-                                                .clip(CircleShape)
-                                                .background(NeonLime)
-                                        )
-                                    }
-                                }
-                            }
-
                             // PhonePe QR Code Scanner
                             Box(
                                 modifier = Modifier
                                     .size(36.dp)
                                     .clip(CircleShape)
-                                    .background(Color(0x33FFFFFF))
-                                    .border(1.dp, Color(0x40FFFFFF), CircleShape)
+                                    .background(Color(0x28FFFFFF))
+                                    .border(1.dp, Color(0x38FFFFFF), CircleShape)
                                     .clickable { onNavigateToTab("log") }
                                     .testTag("home_qr_scan_button"),
                                 contentAlignment = Alignment.Center
@@ -249,78 +217,219 @@ fun HomeScreen(
                                 )
                             }
 
-                            // Notification Bell with Unread Dot
-                            Box(
-                                modifier = Modifier
-                                    .size(36.dp)
-                                    .clip(CircleShape)
-                                    .background(Color(0x33FFFFFF))
-                                    .border(1.dp, Color(0x40FFFFFF), CircleShape)
-                                    .clickable { onOpenInsights() }
-                                    .testTag("home_notifications_bell"),
-                                contentAlignment = Alignment.Center
-                            ) {
-                                Icon(
-                                    imageVector = Icons.Default.Notifications,
-                                    contentDescription = "Insights",
-                                    tint = Color.White,
-                                    modifier = Modifier.size(18.dp)
-                                )
+                            // Minimalist Submenu Overflow Button
+                            Box {
                                 Box(
                                     modifier = Modifier
-                                        .size(7.dp)
+                                        .size(36.dp)
                                         .clip(CircleShape)
-                                        .background(NeonLime)
-                                        .align(Alignment.TopEnd)
-                                )
-                            }
+                                        .background(Color(0x28FFFFFF))
+                                        .border(1.dp, Color(0x38FFFFFF), CircleShape)
+                                        .clickable { showTopMenu = !showTopMenu }
+                                        .testTag("home_menu_button"),
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Default.MoreVert,
+                                        contentDescription = "More Options",
+                                        tint = Color.White,
+                                        modifier = Modifier.size(20.dp)
+                                    )
+                                    // Notification dot if KYC not completed or new insight available
+                                    if (!uiState.userData.isBehavioralKycCompleted || uiState.recentInsight != null) {
+                                        Box(
+                                            modifier = Modifier
+                                                .size(7.dp)
+                                                .clip(CircleShape)
+                                                .background(PhonePeAccentPurple)
+                                                .align(Alignment.TopEnd)
+                                        )
+                                    }
+                                }
 
-                            // Help / AI Question
-                            Box(
-                                modifier = Modifier
-                                    .size(36.dp)
-                                    .clip(CircleShape)
-                                    .background(Color(0x33FFFFFF))
-                                    .border(1.dp, Color(0x40FFFFFF), CircleShape)
-                                    .clickable { onOpenInsights() }
-                                    .testTag("home_help_button"),
-                                contentAlignment = Alignment.Center
-                            ) {
-                                Icon(
-                                    imageVector = Icons.Default.HelpOutline,
-                                    contentDescription = "Help",
-                                    tint = Color.White,
-                                    modifier = Modifier.size(18.dp)
-                                )
+                                // Elegant Submenu Dropdown
+                                DropdownMenu(
+                                    expanded = showTopMenu,
+                                    onDismissRequest = { showTopMenu = false },
+                                    modifier = Modifier
+                                        .background(Color(0xFF1E1632))
+                                        .border(1.dp, Color(0x338B5CF6), RoundedCornerShape(14.dp))
+                                ) {
+                                    // Submenu Item: Behavioral KYC
+                                    DropdownMenuItem(
+                                        text = {
+                                            Row(
+                                                modifier = Modifier.fillMaxWidth(),
+                                                horizontalArrangement = Arrangement.SpaceBetween,
+                                                verticalAlignment = Alignment.CenterVertically
+                                            ) {
+                                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                                    Icon(
+                                                        imageVector = if (uiState.userData.isBehavioralKycCompleted) Icons.Default.VerifiedUser else Icons.Default.Badge,
+                                                        contentDescription = null,
+                                                        tint = if (uiState.userData.isBehavioralKycCompleted) EmeraldGreen else SoftLavender,
+                                                        modifier = Modifier.size(18.dp)
+                                                    )
+                                                    Spacer(modifier = Modifier.width(10.dp))
+                                                    Text(
+                                                        text = "Behavioral KYC",
+                                                        fontFamily = HelveticaFontFamily,
+                                                        color = Color.White,
+                                                        fontSize = 13.sp,
+                                                        fontWeight = FontWeight.Medium
+                                                    )
+                                                }
+                                                Spacer(modifier = Modifier.width(16.dp))
+                                                Text(
+                                                    text = if (uiState.userData.isBehavioralKycCompleted) "100%" else "+250 XP",
+                                                    fontFamily = HelveticaFontFamily,
+                                                    color = if (uiState.userData.isBehavioralKycCompleted) EmeraldGreen else AmberCashback,
+                                                    fontSize = 11.sp,
+                                                    fontWeight = FontWeight.Bold
+                                                )
+                                            }
+                                        },
+                                        onClick = {
+                                            showTopMenu = false
+                                            onOpenKyc()
+                                        },
+                                        modifier = Modifier.testTag("home_kyc_badge_button")
+                                    )
+
+                                    // Submenu Item: AI Insights & Roasts
+                                    DropdownMenuItem(
+                                        text = {
+                                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                                Icon(
+                                                    imageVector = Icons.Default.Notifications,
+                                                    contentDescription = null,
+                                                    tint = SoftLavender,
+                                                    modifier = Modifier.size(18.dp)
+                                                )
+                                                Spacer(modifier = Modifier.width(10.dp))
+                                                Text(
+                                                    text = "Discipline AI Insights",
+                                                    fontFamily = HelveticaFontFamily,
+                                                    color = Color.White,
+                                                    fontSize = 13.sp,
+                                                    fontWeight = FontWeight.Medium
+                                                )
+                                            }
+                                        },
+                                        onClick = {
+                                            showTopMenu = false
+                                            onOpenInsights()
+                                        },
+                                        modifier = Modifier.testTag("home_notifications_bell")
+                                    )
+
+                                    // Submenu Item: Runway Autonomous Finance
+                                    DropdownMenuItem(
+                                        text = {
+                                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                                Icon(
+                                                    imageVector = Icons.Default.TrendingUp,
+                                                    contentDescription = null,
+                                                    tint = SoftLavender,
+                                                    modifier = Modifier.size(18.dp)
+                                                )
+                                                Spacer(modifier = Modifier.width(10.dp))
+                                                Text(
+                                                    text = "Runway XAI Forecast",
+                                                    fontFamily = HelveticaFontFamily,
+                                                    color = Color.White,
+                                                    fontSize = 13.sp,
+                                                    fontWeight = FontWeight.Medium
+                                                )
+                                            }
+                                        },
+                                        onClick = {
+                                            showTopMenu = false
+                                            onNavigateToTab("runway")
+                                        }
+                                    )
+
+                                    // Submenu Item: Allowance & Budget Limits
+                                    DropdownMenuItem(
+                                        text = {
+                                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                                Icon(
+                                                    imageVector = Icons.Default.Tune,
+                                                    contentDescription = null,
+                                                    tint = SoftLavender,
+                                                    modifier = Modifier.size(18.dp)
+                                                )
+                                                Spacer(modifier = Modifier.width(10.dp))
+                                                Text(
+                                                    text = if (showBudgetSlider) "Hide Allowance Slider" else "Adjust Allowance Limit",
+                                                    fontFamily = HelveticaFontFamily,
+                                                    color = Color.White,
+                                                    fontSize = 13.sp,
+                                                    fontWeight = FontWeight.Medium
+                                                )
+                                            }
+                                        },
+                                        onClick = {
+                                            showTopMenu = false
+                                            showBudgetSlider = !showBudgetSlider
+                                        }
+                                    )
+
+                                    // Submenu Item: Help & Support
+                                    DropdownMenuItem(
+                                        text = {
+                                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                                Icon(
+                                                    imageVector = Icons.Default.HelpOutline,
+                                                    contentDescription = null,
+                                                    tint = SoftLavender,
+                                                    modifier = Modifier.size(18.dp)
+                                                )
+                                                Spacer(modifier = Modifier.width(10.dp))
+                                                Text(
+                                                    text = "Help & Support",
+                                                    fontFamily = HelveticaFontFamily,
+                                                    color = Color.White,
+                                                    fontSize = 13.sp,
+                                                    fontWeight = FontWeight.Medium
+                                                )
+                                            }
+                                        },
+                                        onClick = {
+                                            showTopMenu = false
+                                            onOpenInsights()
+                                        },
+                                        modifier = Modifier.testTag("home_help_button")
+                                    )
+                                }
                             }
                         }
                     }
 
                     Spacer(modifier = Modifier.height(18.dp))
 
-                    // 2. High-End Vibrant Habit Wallet & Discipline Pass Banner
+                    // 2. High-End Habit Wallet & Discipline Pass Banner (Minimal Dark Glassmorphism)
                     GlassCard(
                         modifier = Modifier
                             .fillMaxWidth()
                             .testTag("home_glassmorphic_wallet_card"),
-                        shape = RoundedCornerShape(24.dp),
-                        backgroundColor = Color(0xFF231842),
+                        shape = RoundedCornerShape(20.dp),
+                        backgroundColor = Color(0xFF191228),
                         gradientBrush = Brush.verticalGradient(
                             listOf(
-                                Color(0xFF3B1D6B),
-                                Color(0xFF261448),
-                                Color(0xFF180D30)
+                                Color(0xFF261642),
+                                Color(0xFF18102B),
+                                Color(0xFF120C20)
                             )
                         ),
                         borderBrush = Brush.linearGradient(
                             listOf(
-                                Color(0xFF9333EA),
-                                Color(0xFF7C3AED),
-                                Color(0xFF4C1D95),
-                                Color(0x60E4FF73)
+                                Color(0x388B5CF6),
+                                Color(0x18A855F7),
+                                Color(0x14FFFFFF)
                             )
                         ),
-                        elevation = 8.dp
+                        elevation = 0.dp
                     ) {
                         Column(
                             modifier = Modifier
@@ -338,13 +447,13 @@ fun HomeScreen(
                                         modifier = Modifier
                                             .size(24.dp)
                                             .clip(RoundedCornerShape(6.dp))
-                                            .background(NeonLime),
+                                            .background(PhonePePurple),
                                         contentAlignment = Alignment.Center
                                     ) {
                                         Text(
                                             text = "₹",
                                             fontFamily = HelveticaFontFamily,
-                                            color = Color.Black,
+                                            color = Color.White,
                                             fontSize = 14.sp,
                                             fontWeight = FontWeight.Bold
                                         )
@@ -362,10 +471,10 @@ fun HomeScreen(
 
                                 GlassBadge(
                                     text = "${uiState.xp} XP • LVL 4",
-                                    textColor = NeonLime,
-                                    borderColor = Color(0x66E4FF73),
-                                    backgroundColor = Color(0x2EE4FF73),
-                                    dotColor = NeonLime
+                                    textColor = SoftLavender,
+                                    borderColor = Color(0x308B5CF6),
+                                    backgroundColor = Color(0x1A8B5CF6),
+                                    dotColor = PhonePeAccentPurple
                                 )
                             }
 
@@ -445,8 +554,8 @@ fun HomeScreen(
                                                     .fillMaxHeight(ratio)
                                                     .clip(RoundedCornerShape(topStart = 4.dp, topEnd = 4.dp))
                                                 .background(
-                                                    if (isCurrent) NeonLime
-                                                    else Color(0x408B5CF6)
+                                                    if (isCurrent) PhonePeLightPurple
+                                                    else Color(0x288B5CF6)
                                                 )
                                             )
                                         }
@@ -463,13 +572,13 @@ fun HomeScreen(
                                             .size(38.dp)
                                             .clip(CircleShape)
                                             .background(
-                                                if (showBudgetSlider) NeonLime
-                                                else Color(0xFF2E2248)
+                                                if (showBudgetSlider) PhonePeLightPurple
+                                                else Color(0xFF201633)
                                             )
                                             .border(
                                                 1.dp,
-                                                if (showBudgetSlider) NeonLime
-                                                else Color(0x608B5CF6),
+                                                if (showBudgetSlider) PhonePeLightPurple
+                                                else Color(0x308B5CF6),
                                                 CircleShape
                                             )
                                             .clickable { showBudgetSlider = !showBudgetSlider }
@@ -479,7 +588,7 @@ fun HomeScreen(
                                         Icon(
                                             imageVector = Icons.Default.Tune,
                                             contentDescription = "Adjust Budget Slider",
-                                            tint = if (showBudgetSlider) Color.Black else Color.White,
+                                            tint = Color.White,
                                             modifier = Modifier.size(18.dp)
                                         )
                                     }
@@ -488,21 +597,14 @@ fun HomeScreen(
                                     Box(
                                         modifier = Modifier
                                             .clip(RoundedCornerShape(16.dp))
-                                            .background(
-                                                Brush.linearGradient(
-                                                    listOf(
-                                                        Color(0xFF2A2000),
-                                                        Color(0xFF1E1700)
-                                                    )
-                                                )
-                                            )
+                                            .background(Color(0xFF201635))
                                             .border(
                                                 1.dp,
                                                 Brush.linearGradient(
                                                     listOf(
-                                                        Color(0xFFE4FF73),
-                                                        Color(0x80CCFF00),
-                                                        Color(0xFFF59E0B)
+                                                        Color(0x408B5CF6),
+                                                        Color(0x25A855F7),
+                                                        Color(0x20F59E0B)
                                                     )
                                                 ),
                                                 RoundedCornerShape(16.dp)
@@ -516,7 +618,7 @@ fun HomeScreen(
                                             Text(
                                                 text = "⚡ I Resisted",
                                                 fontFamily = HelveticaFontFamily,
-                                                color = NeonLime,
+                                                color = Color.White,
                                                 fontSize = 12.sp,
                                                 fontWeight = FontWeight.Bold
                                             )
@@ -524,9 +626,9 @@ fun HomeScreen(
                                             Text(
                                                 text = "+15 XP",
                                                 fontFamily = HelveticaFontFamily,
-                                                color = Color.White,
+                                                color = AmberCashback,
                                                 fontSize = 10.sp,
-                                                fontWeight = FontWeight.Medium
+                                                fontWeight = FontWeight.SemiBold
                                             )
                                         }
                                     }
@@ -563,9 +665,9 @@ fun HomeScreen(
                                         }
                                         GlassBadge(
                                             text = "₹${tempAllowanceSlider.toInt()}/mo",
-                                            textColor = NeonLime,
-                                            borderColor = Color(0x66E4FF73),
-                                            backgroundColor = Color(0x2EE4FF73)
+                                            textColor = SoftLavender,
+                                            borderColor = Color(0x308B5CF6),
+                                            backgroundColor = Color(0x1A8B5CF6)
                                         )
                                     }
 
@@ -580,9 +682,9 @@ fun HomeScreen(
                                         valueRange = 1000f..30000f,
                                         steps = 29,
                                         colors = SliderDefaults.colors(
-                                            thumbColor = NeonLime,
-                                            activeTrackColor = NeonLime,
-                                            inactiveTrackColor = Color(0x408B5CF6)
+                                            thumbColor = PhonePeLightPurple,
+                                            activeTrackColor = PhonePeLightPurple,
+                                            inactiveTrackColor = Color(0x308B5CF6)
                                         ),
                                         modifier = Modifier.fillMaxWidth().testTag("home_budget_slider")
                                     )
@@ -612,6 +714,20 @@ fun HomeScreen(
             }
         }
 
+        // 2a. Sophisticated Google Pay / PhonePe Business Quick Actions Grid
+        item {
+            BusinessQuickActionsGrid(
+                onScanQr = { onNavigateToTab("log") },
+                onPayContact = { onNavigateToTab("friends") },
+                onSplitExpenses = { onNavigateToTab("friends") },
+                onBankTransfer = { onNavigateToTab("budget") },
+                onCheckBalance = { showBudgetSlider = !showBudgetSlider },
+                onSelfTransfer = { onNavigateToTab("budget") },
+                onPayBills = { onOpenInsights() },
+                onLogExpense = { onNavigateToTab("log") }
+            )
+        }
+
         // 2b. Runway: Autonomous Finance & XAI Engine Featured Card
         item {
             Box(
@@ -624,15 +740,15 @@ fun HomeScreen(
                         .fillMaxWidth()
                         .clickable { onNavigateToTab("runway") }
                         .testTag("home_runway_banner"),
-                    shape = RoundedCornerShape(20.dp),
-                    backgroundColor = Color(0xFF22163D),
+                    shape = RoundedCornerShape(18.dp),
+                    backgroundColor = Color(0xFF161124),
                     gradientBrush = Brush.verticalGradient(
-                        listOf(Color(0xFF321A5E), Color(0xFF1B1133))
+                        listOf(Color(0xFF221538), Color(0xFF140E20))
                     ),
                     borderBrush = Brush.linearGradient(
-                        listOf(Color(0xFF9333EA), Color(0xFF7C3AED), Color(0x60E4FF73))
+                        listOf(Color(0x338B5CF6), Color(0x18FFFFFF))
                     ),
-                    elevation = 4.dp
+                    elevation = 0.dp
                 ) {
                     Row(
                         modifier = Modifier
@@ -645,19 +761,15 @@ fun HomeScreen(
                             modifier = Modifier
                                 .size(44.dp)
                                 .clip(RoundedCornerShape(14.dp))
-                                .background(
-                                    Brush.linearGradient(
-                                        listOf(NeonLime, Color(0xFF8CE000))
-                                    )
-                                ),
+                                .background(Color(0xFF24163E))
+                                .border(1.dp, Color(0x388B5CF6), RoundedCornerShape(14.dp)),
                             contentAlignment = Alignment.Center
                         ) {
-                            Text(
-                                text = "R",
-                                fontFamily = HelveticaFontFamily,
-                                color = Color.Black,
-                                fontSize = 22.sp,
-                                fontWeight = FontWeight.Black
+                            Icon(
+                                imageVector = Icons.Default.TrendingUp,
+                                contentDescription = "Runway Engine",
+                                tint = SoftLavender,
+                                modifier = Modifier.size(24.dp)
                             )
                         }
 
@@ -678,9 +790,9 @@ fun HomeScreen(
                                 )
                                 GlassBadge(
                                     text = "XAI ACTIVE",
-                                    textColor = NeonLime,
-                                    borderColor = Color(0x66CCFF00),
-                                    backgroundColor = Color(0x2ECCFF00)
+                                    textColor = EmeraldGreen,
+                                    borderColor = EmeraldGreen.copy(alpha = 0.4f),
+                                    backgroundColor = EmeraldGreen.copy(alpha = 0.15f)
                                 )
                             }
                             Spacer(modifier = Modifier.height(2.dp))
@@ -699,14 +811,14 @@ fun HomeScreen(
                             modifier = Modifier
                                 .size(34.dp)
                                 .clip(CircleShape)
-                                .background(Color(0xFF382269))
-                                .border(1.dp, Color(0x808B5CF6), CircleShape),
+                                .background(Color(0xFF261942))
+                                .border(1.dp, Color(0x408B5CF6), CircleShape),
                             contentAlignment = Alignment.Center
                         ) {
                             Icon(
                                 imageVector = Icons.AutoMirrored.Filled.ArrowForward,
                                 contentDescription = "Open Runway",
-                                tint = NeonLime,
+                                tint = Color.White,
                                 modifier = Modifier.size(16.dp)
                             )
                         }
@@ -728,15 +840,15 @@ fun HomeScreen(
                             .fillMaxWidth()
                             .clickable { onOpenKyc() }
                             .testTag("home_kyc_incomplete_banner"),
-                        shape = RoundedCornerShape(20.dp),
-                        backgroundColor = Color(0xFF1E1736),
+                        shape = RoundedCornerShape(18.dp),
+                        backgroundColor = Color(0xFF161124),
                         gradientBrush = Brush.verticalGradient(
-                            listOf(Color(0xFF2B1D4C), Color(0xFF18102B))
+                            listOf(Color(0xFF201435), Color(0xFF130E20))
                         ),
                         borderBrush = Brush.linearGradient(
-                            listOf(NeonLime.copy(alpha = 0.8f), Color(0xFF8B5CF6), Color(0x40FFFFFF))
+                            listOf(Color(0x408B5CF6), Color(0x14FFFFFF))
                         ),
-                        elevation = 4.dp
+                        elevation = 0.dp
                     ) {
                         Row(
                             modifier = Modifier
@@ -748,18 +860,14 @@ fun HomeScreen(
                                 modifier = Modifier
                                     .size(44.dp)
                                     .clip(RoundedCornerShape(14.dp))
-                                    .background(
-                                        Brush.linearGradient(
-                                            listOf(Color(0x33CCFF00), Color(0x1ACCFF00))
-                                        )
-                                    )
-                                    .border(1.dp, NeonLime.copy(alpha = 0.5f), RoundedCornerShape(14.dp)),
+                                    .background(Color(0x208B5CF6))
+                                    .border(1.dp, Color(0x338B5CF6), RoundedCornerShape(14.dp)),
                                 contentAlignment = Alignment.Center
                             ) {
                                 Icon(
                                     imageVector = Icons.Default.Psychology,
                                     contentDescription = "Behavioral KYC",
-                                    tint = NeonLime,
+                                    tint = PhonePeAccentPurple,
                                     modifier = Modifier.size(22.dp)
                                 )
                             }
@@ -778,9 +886,9 @@ fun HomeScreen(
                                     Spacer(modifier = Modifier.width(6.dp))
                                     GlassBadge(
                                         text = "+250 XP",
-                                        textColor = NeonLime,
-                                        borderColor = NeonLime.copy(alpha = 0.4f),
-                                        backgroundColor = Color(0x2ECCFF00)
+                                        textColor = SoftLavender,
+                                        borderColor = Color(0x308B5CF6),
+                                        backgroundColor = Color(0x1A8B5CF6)
                                     )
                                 }
                                 Spacer(modifier = Modifier.height(2.dp))
@@ -799,14 +907,14 @@ fun HomeScreen(
                                 modifier = Modifier
                                     .size(34.dp)
                                     .clip(CircleShape)
-                                    .background(Color(0x2ECCFF00))
-                                    .border(1.dp, NeonLime, CircleShape),
+                                    .background(Color(0x208B5CF6))
+                                    .border(1.dp, Color(0x338B5CF6), CircleShape),
                                 contentAlignment = Alignment.Center
                             ) {
                                 Icon(
                                     imageVector = Icons.AutoMirrored.Filled.ArrowForward,
                                     contentDescription = "Complete KYC",
-                                    tint = NeonLime,
+                                    tint = PhonePeAccentPurple,
                                     modifier = Modifier.size(16.dp)
                                 )
                             }
@@ -870,7 +978,7 @@ fun HomeScreen(
                 uiState.recentInsight?.let { insight ->
                     val isBad = insight.quality == "BAD"
                     val isGood = insight.quality == "GOOD"
-                    val accentColor = if (isBad) CoralRed else if (isGood) EmeraldGreen else NeonLime
+                    val accentColor = if (isBad) CoralRed else if (isGood) EmeraldGreen else PhonePeAccentPurple
                     val badgeEmoji = if (isBad) "📉" else if (isGood) "📈" else "⚖️"
                     val title = if (isBad) "Leakage Detected" else if (isGood) "Solid Choice" else "Neutral Spend"
 
@@ -968,74 +1076,146 @@ fun HomeScreen(
 
                     Spacer(modifier = Modifier.height(12.dp))
 
+                    val filterCategories = listOf(
+                        "All" to "All Spends",
+                        "food" to "Food",
+                        "friends" to "Friends",
+                        "essential" to "Grocery",
+                        "shopping" to "Shopping",
+                        "income" to "Income",
+                        "bs" to "Impulse",
+                        "health" to "Health",
+                        "travel" to "Travel"
+                    )
+                    val activeLabel = filterCategories.find { it.first.equals(uiState.filterCat, ignoreCase = true) }?.second ?: "All Spends"
+
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Text(
-                            text = "Recent Transactions",
-                            fontFamily = HelveticaFontFamily,
-                            color = Color.White,
-                            fontSize = 16.sp,
-                            fontWeight = FontWeight.Bold,
-                            letterSpacing = (-0.2).sp
-                        )
-                        Text(
-                            text = "${filteredTxns.size} TOTAL",
-                            fontFamily = HelveticaFontFamily,
-                            color = NeonLime,
-                            fontSize = 11.sp,
-                            fontWeight = FontWeight.Bold,
-                            letterSpacing = 0.8.sp
-                        )
-                    }
+                        Column {
+                            Text(
+                                text = "Recent Activity",
+                                fontFamily = HelveticaFontFamily,
+                                color = Color.White,
+                                fontSize = 16.sp,
+                                fontWeight = FontWeight.Bold,
+                                letterSpacing = (-0.2).sp
+                            )
+                            Text(
+                                text = "${filteredTxns.size} transactions",
+                                fontFamily = HelveticaFontFamily,
+                                color = TextMuted,
+                                fontSize = 11.sp,
+                                fontWeight = FontWeight.Normal
+                            )
+                        }
 
-                    Spacer(modifier = Modifier.height(10.dp))
-
-                    // Minimalist filter chips with vibrant selection
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .horizontalScroll(rememberScrollState()),
-                        horizontalArrangement = Arrangement.spacedBy(6.dp)
-                    ) {
-                        val filterCategories = listOf(
-                            "All" to "✨ All",
-                            "food" to "🍱 Food",
-                            "friends" to "🤝 Friends",
-                            "essential" to "🛒 Essential",
-                            "shopping" to "🛍️ Shopping",
-                            "income" to "💼 Income",
-                            "bs" to "💸 BS Spends",
-                            "health" to "🌿 Health",
-                            "travel" to "🚕 Travel"
-                        )
-
-                        filterCategories.forEach { (catKey, label) ->
-                            val isSelected = uiState.filterCat.equals(catKey, ignoreCase = true)
-                            Box(
+                        // Category Filter Submenu Dropdown Button
+                        Box {
+                            Row(
                                 modifier = Modifier
-                                    .clip(RoundedCornerShape(14.dp))
-                                    .background(if (isSelected) NeonLime else Color(0xFF221A38))
-                                    .border(
-                                        1.dp,
-                                        if (isSelected) NeonLime else Color(0x408B5CF6),
-                                        RoundedCornerShape(14.dp)
-                                    )
-                                    .clickable { onFilterSelect(catKey) }
-                                    .padding(horizontal = 12.dp, vertical = 7.dp)
-                                    .testTag("filter_chip_$catKey"),
-                                contentAlignment = Alignment.Center
+                                    .clip(RoundedCornerShape(12.dp))
+                                    .background(Color(0xFF1E1734))
+                                    .border(1.dp, Color(0x338B5CF6), RoundedCornerShape(12.dp))
+                                    .clickable { showCategoryMenu = !showCategoryMenu }
+                                    .padding(horizontal = 10.dp, vertical = 6.dp)
+                                    .testTag("txn_category_dropdown_button"),
+                                verticalAlignment = Alignment.CenterVertically
                             ) {
+                                if (uiState.filterCat != "All") {
+                                    CategoryIcon(type = uiState.filterCat, size = 13.dp)
+                                    Spacer(modifier = Modifier.width(6.dp))
+                                }
                                 Text(
-                                    text = label,
+                                    text = activeLabel,
                                     fontFamily = HelveticaFontFamily,
-                                    color = if (isSelected) Color.Black else Color.White,
+                                    color = SoftLavender,
                                     fontSize = 11.sp,
-                                    fontWeight = FontWeight.Bold
+                                    fontWeight = FontWeight.SemiBold
+                                )
+                                Spacer(modifier = Modifier.width(4.dp))
+                                Icon(
+                                    imageVector = if (showCategoryMenu) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
+                                    contentDescription = "Select Category",
+                                    tint = SoftLavender,
+                                    modifier = Modifier.size(14.dp)
                                 )
                             }
+
+                            // Submenu Filter Dropdown Menu
+                            DropdownMenu(
+                                expanded = showCategoryMenu,
+                                onDismissRequest = { showCategoryMenu = false },
+                                modifier = Modifier
+                                    .background(Color(0xFF1E1632))
+                                    .border(1.dp, Color(0x388B5CF6), RoundedCornerShape(14.dp))
+                            ) {
+                                filterCategories.forEach { (catKey, label) ->
+                                    val isSelected = uiState.filterCat.equals(catKey, ignoreCase = true)
+                                    DropdownMenuItem(
+                                        text = {
+                                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                                if (catKey != "All") {
+                                                    CategoryIcon(type = catKey, size = 15.dp)
+                                                    Spacer(modifier = Modifier.width(8.dp))
+                                                }
+                                                Text(
+                                                    text = label,
+                                                    fontFamily = HelveticaFontFamily,
+                                                    color = if (isSelected) Color.White else TextSecondary,
+                                                    fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal,
+                                                    fontSize = 12.sp
+                                                )
+                                            }
+                                        },
+                                        trailingIcon = {
+                                            if (isSelected) {
+                                                Icon(
+                                                    imageVector = Icons.Default.Check,
+                                                    contentDescription = "Selected",
+                                                    tint = PhonePeLightPurple,
+                                                    modifier = Modifier.size(16.dp)
+                                                )
+                                            }
+                                        },
+                                        onClick = {
+                                            onFilterSelect(catKey)
+                                            showCategoryMenu = false
+                                        },
+                                        modifier = Modifier.testTag("filter_chip_$catKey")
+                                    )
+                                }
+                            }
+                        }
+                    }
+
+                    if (uiState.filterCat != "All") {
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Row(
+                            modifier = Modifier
+                                .clip(RoundedCornerShape(8.dp))
+                                .background(Color(0x1F8B5CF6))
+                                .padding(horizontal = 8.dp, vertical = 4.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                text = "Filter: $activeLabel",
+                                fontFamily = HelveticaFontFamily,
+                                color = SoftLavender,
+                                fontSize = 11.sp,
+                                fontWeight = FontWeight.Medium
+                            )
+                            Spacer(modifier = Modifier.width(6.dp))
+                            Text(
+                                text = "✕ Reset",
+                                fontFamily = HelveticaFontFamily,
+                                color = Color.White,
+                                fontSize = 10.sp,
+                                fontWeight = FontWeight.Bold,
+                                modifier = Modifier.clickable { onFilterSelect("All") }
+                            )
                         }
                     }
                 }
@@ -1070,14 +1250,12 @@ fun PhonePeTransactionCard(
         GlassCard(
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(16.dp),
-            backgroundColor = Color(0xFF1D1633),
-            gradientBrush = Brush.verticalGradient(
-                listOf(Color(0xFF261D42), Color(0xFF18122B))
-            ),
+            backgroundColor = Color(0xFF151022),
+            gradientBrush = null,
             borderBrush = Brush.linearGradient(
-                listOf(Color(0x608B5CF6), Color(0x30A855F7), Color(0x203B82F6))
+                listOf(Color(0x228B5CF6), Color(0x14FFFFFF))
             ),
-            elevation = 3.dp
+            elevation = 0.dp
         ) {
             Row(
                 modifier = Modifier
@@ -1085,21 +1263,12 @@ fun PhonePeTransactionCard(
                     .padding(horizontal = 14.dp, vertical = 12.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                // Merchant/Category Icon in PhonePe Squircle Vibrant container
-                Box(
-                    modifier = Modifier
-                        .size(44.dp)
-                        .clip(RoundedCornerShape(14.dp))
-                        .background(Color(txn.colorHex).copy(alpha = 0.35f))
-                        .border(
-                            1.5.dp,
-                            Color(txn.colorHex),
-                            RoundedCornerShape(14.dp)
-                        ),
-                    contentAlignment = Alignment.Center
-                ) {
-                    CategoryIcon(type = txn.cat, tint = Color.White, size = 20.dp)
-                }
+                // Merchant/Category Icon in Google Pay / PhonePe Squircle container
+                BusinessCategoryTile(
+                    type = txn.cat,
+                    size = 44.dp,
+                    iconSize = 22.dp
+                )
 
                 Spacer(modifier = Modifier.width(12.dp))
 
@@ -1131,7 +1300,7 @@ fun PhonePeTransactionCard(
                         Text(
                             text = txn.context,
                             fontFamily = HelveticaFontFamily,
-                            color = NeonLime,
+                            color = SoftLavender,
                             fontSize = 10.sp,
                             fontWeight = FontWeight.SemiBold,
                             maxLines = 1,
@@ -1145,7 +1314,7 @@ fun PhonePeTransactionCard(
 
                 // PhonePe Amount & Health/Discipline Impact
                 val isPositive = txn.amount > 0
-                val amountColor = if (isPositive) NeonLime else Color.White
+                val amountColor = if (isPositive) EmeraldGreen else Color.White
                 val prefix = if (isPositive) "+₹" else "-₹"
 
                 Column(horizontalAlignment = Alignment.End) {

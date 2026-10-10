@@ -40,10 +40,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.ui.theme.EmeraldGreen
-import com.example.ui.theme.GlassBorderGradient
 import com.example.ui.theme.HelveticaFontFamily
-import com.example.ui.theme.NeonLime
 import com.example.ui.theme.PhonePeLightPurple
+import com.example.ui.theme.PhonePePurple
 
 @Composable
 fun GlassPillNav(
@@ -123,21 +122,21 @@ fun GlassPillNav(
             }
         }
 
-        // Elevated Center PhonePe QR Scanner Button with glowing glassmorphism
+        // Elevated Center PhonePe QR Scanner Button with minimal elevated surface
         Box(
             modifier = Modifier
                 .offset(y = (-14).dp)
-                .size(56.dp)
-                .shadow(16.dp, RoundedCornerShape(18.dp), spotColor = Color(0xFF7C3AED))
+                .size(54.dp)
+                .shadow(12.dp, RoundedCornerShape(18.dp), spotColor = Color(0x60000000))
                 .clip(RoundedCornerShape(18.dp))
                 .background(
-                    Brush.linearGradient(
-                        listOf(Color(0xFFA855F7), Color(0xFF7C3AED), Color(0xFF4C1D95))
+                    Brush.verticalGradient(
+                        listOf(Color(0xFF6D28D9), Color(0xFF4C1D95))
                     )
                 )
                 .border(
-                    1.5.dp,
-                    Brush.sweepGradient(listOf(Color.White, NeonLime, Color(0xFFA855F7), Color.White)),
+                    1.dp,
+                    Color(0x66C4B5FD),
                     RoundedCornerShape(18.dp)
                 )
                 .clickable(
@@ -153,7 +152,7 @@ fun GlassPillNav(
                 imageVector = Icons.Default.QrCodeScanner,
                 contentDescription = "Scan QR",
                 tint = Color.White,
-                modifier = Modifier.size(28.dp)
+                modifier = Modifier.size(26.dp)
             )
         }
     }

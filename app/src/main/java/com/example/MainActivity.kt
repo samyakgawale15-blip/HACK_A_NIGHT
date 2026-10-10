@@ -118,10 +118,10 @@ fun MainApp(
                                 modifier = Modifier
                                     .size(36.dp)
                                     .clip(CircleShape)
-                                    .background(NeonLime),
+                                    .background(com.example.ui.theme.PhonePePurple),
                                 contentAlignment = Alignment.Center
                             ) {
-                                CategoryIcon(type = "income", tint = Color.Black, size = 18.dp)
+                                CategoryIcon(type = "income", tint = Color.White, size = 18.dp)
                             }
 
                             Box(
@@ -136,7 +136,7 @@ fun MainApp(
                                 Text(
                                     text = "⚡ RUNWAY XAI",
                                     fontFamily = HelveticaFontFamily,
-                                    color = NeonLime,
+                                    color = com.example.ui.theme.SoftLavender,
                                     fontSize = 10.sp,
                                     fontWeight = FontWeight.Bold,
                                     letterSpacing = 0.8.sp
@@ -163,7 +163,7 @@ fun MainApp(
                                     modifier = Modifier
                                         .size(6.dp)
                                         .clip(CircleShape)
-                                        .background(NeonLime)
+                                        .background(com.example.ui.theme.PhonePeAccentPurple)
                                         .align(Alignment.TopEnd)
                                 )
                             }

@@ -66,9 +66,11 @@ import com.example.ui.theme.GlassSurfaceHigh
 import com.example.ui.theme.HelveticaFontFamily
 import com.example.ui.theme.NeonLime
 import com.example.ui.theme.ObsidianBlack
+import com.example.ui.theme.PhonePeAccentPurple
 import com.example.ui.theme.PhonePeHeroGradient
 import com.example.ui.theme.PhonePeLightPurple
 import com.example.ui.theme.PhonePePurple
+import com.example.ui.theme.SoftLavender
 import com.example.ui.theme.TextMuted
 import com.example.ui.theme.TextPrimary
 import com.example.ui.theme.TextSecondary
@@ -265,11 +267,11 @@ private fun KycDashboardView(
                             .size(42.dp)
                             .clip(CircleShape)
                             .background(
-                                if (userData.isBehavioralKycCompleted) Color(0x2E00D09C) else Color(0x33CCFF00)
+                                if (userData.isBehavioralKycCompleted) Color(0x2E00D09C) else Color(0x228B5CF6)
                             )
                             .border(
                                 1.dp,
-                                if (userData.isBehavioralKycCompleted) EmeraldGreen else NeonLime,
+                                if (userData.isBehavioralKycCompleted) EmeraldGreen else PhonePeAccentPurple,
                                 CircleShape
                             ),
                         contentAlignment = Alignment.Center
@@ -277,7 +279,7 @@ private fun KycDashboardView(
                         Icon(
                             imageVector = if (userData.isBehavioralKycCompleted) Icons.Default.VerifiedUser else Icons.Default.Badge,
                             contentDescription = "KYC Shield",
-                            tint = if (userData.isBehavioralKycCompleted) EmeraldGreen else NeonLime,
+                            tint = if (userData.isBehavioralKycCompleted) EmeraldGreen else PhonePeAccentPurple,
                             modifier = Modifier.size(22.dp)
                         )
                     }
@@ -351,10 +353,10 @@ private fun KycDashboardView(
                     modifier = Modifier
                         .weight(1f)
                         .clip(RoundedCornerShape(14.dp))
-                        .background(if (isTier2) Color(0x2200D09C) else Color(0x1ACCFF00))
+                        .background(if (isTier2) Color(0x2200D09C) else Color(0x1A8B5CF6))
                         .border(
                             1.dp,
-                            if (isTier2) EmeraldGreen.copy(alpha = 0.5f) else NeonLime.copy(alpha = 0.5f),
+                            if (isTier2) EmeraldGreen.copy(alpha = 0.5f) else PhonePeAccentPurple.copy(alpha = 0.5f),
                             RoundedCornerShape(14.dp)
                         )
                         .padding(12.dp)
@@ -364,14 +366,14 @@ private fun KycDashboardView(
                             Icon(
                                 imageVector = if (isTier2) Icons.Default.CheckCircle else Icons.Default.AutoAwesome,
                                 contentDescription = "Tier 2",
-                                tint = if (isTier2) EmeraldGreen else NeonLime,
+                                tint = if (isTier2) EmeraldGreen else PhonePeAccentPurple,
                                 modifier = Modifier.size(16.dp)
                             )
                             Spacer(modifier = Modifier.width(6.dp))
                             Text(
                                 text = if (isTier2) "Tier 2: Done" else "Tier 2: Survey",
                                 fontFamily = HelveticaFontFamily,
-                                color = if (isTier2) EmeraldGreen else NeonLime,
+                                color = if (isTier2) EmeraldGreen else SoftLavender,
                                 fontSize = 11.sp,
                                 fontWeight = FontWeight.Bold
                             )
@@ -490,7 +492,7 @@ private fun KycDashboardView(
         modifier = Modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(16.dp))
-            .background(if (userData.isBehavioralKycCompleted) Color(0x336366F1) else NeonLime)
+            .background(if (userData.isBehavioralKycCompleted) Color(0x336366F1) else PhonePePurple)
             .border(
                 1.dp,
                 if (userData.isBehavioralKycCompleted) ElectricPurple else Color.Transparent,
@@ -505,14 +507,14 @@ private fun KycDashboardView(
             Icon(
                 imageVector = Icons.Default.Psychology,
                 contentDescription = "Survey",
-                tint = if (userData.isBehavioralKycCompleted) Color.White else Color.Black,
+                tint = Color.White,
                 modifier = Modifier.size(18.dp)
             )
             Spacer(modifier = Modifier.width(8.dp))
             Text(
                 text = if (userData.isBehavioralKycCompleted) "Re-calibrate Behavioral Survey" else "Complete Deep Behavioral Survey (+250 XP)",
                 fontFamily = HelveticaFontFamily,
-                color = if (userData.isBehavioralKycCompleted) Color.White else Color.Black,
+                color = Color.White,
                 fontSize = 14.sp,
                 fontWeight = FontWeight.Bold
             )
@@ -580,7 +582,7 @@ private fun KycSurveyInteractiveView(
                         .weight(1f)
                         .height(4.dp)
                         .clip(RoundedCornerShape(2.dp))
-                        .background(if (currentStep >= i) NeonLime else Color(0x24FFFFFF))
+                        .background(if (currentStep >= i) PhonePeLightPurple else Color(0x24FFFFFF))
                 )
             }
         }
@@ -844,7 +846,7 @@ private fun KycSurveyInteractiveView(
             modifier = Modifier
                 .fillMaxWidth()
                 .clip(RoundedCornerShape(16.dp))
-                .background(NeonLime)
+                .background(PhonePePurple)
                 .clickable { onNextStep() }
                 .padding(vertical = 15.dp)
                 .testTag("kyc_survey_continue_button"),
@@ -853,7 +855,7 @@ private fun KycSurveyInteractiveView(
             Text(
                 text = if (currentStep == 4) "Calibrate Financial DNA (+250 XP)" else "Continue",
                 fontFamily = HelveticaFontFamily,
-                color = Color.Black,
+                color = Color.White,
                 fontSize = 15.sp,
                 fontWeight = FontWeight.Bold
             )

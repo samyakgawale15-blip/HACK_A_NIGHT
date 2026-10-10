@@ -21,6 +21,13 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountBalance
+import androidx.compose.material.icons.filled.Assessment
+import androidx.compose.material.icons.filled.Language
+import androidx.compose.material.icons.filled.Savings
+import androidx.compose.material.icons.filled.TrendingUp
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.Text
@@ -51,8 +58,10 @@ import com.example.ui.theme.DeepPurple3
 import com.example.ui.theme.EmeraldGreen
 import com.example.ui.theme.GlassBorderGradient
 import com.example.ui.theme.HelveticaFontFamily
-import com.example.ui.theme.NeonLime
 import com.example.ui.theme.ObsidianBlack
+import com.example.ui.theme.PhonePeLightPurple
+import com.example.ui.theme.PhonePePurple
+import com.example.ui.theme.SoftLavender
 import com.example.ui.theme.TextMuted
 import com.example.ui.theme.TextPrimary
 import com.example.ui.theme.TextSecondary
@@ -87,7 +96,7 @@ fun BudgetScreen(
                 Text(
                     text = "CFO Mode.",
                     fontFamily = HelveticaFontFamily,
-                    color = NeonLime,
+                    color = Color.White,
                     fontSize = 36.sp,
                     fontWeight = FontWeight.Bold,
                     letterSpacing = (-1).sp
@@ -115,9 +124,9 @@ fun BudgetScreen(
                         listOf(Color(0xFF3B1D6B), Color(0xFF241347), Color(0xFF160B2B))
                     ),
                     borderBrush = Brush.linearGradient(
-                        listOf(Color(0xFF9333EA), Color(0xFF7C3AED), Color(0x60E4FF73))
+                        listOf(Color(0xFF8B5CF6), Color(0xFF6D28D9), Color(0x20FFFFFF))
                     ),
-                    elevation = 8.dp
+                    elevation = 0.dp
                 ) {
                     Column(modifier = Modifier.padding(20.dp)) {
                         Row(
@@ -136,10 +145,10 @@ fun BudgetScreen(
 
                             GlassBadge(
                                 text = "HEALTHY",
-                                textColor = NeonLime,
-                                borderColor = Color(0x33E4FF73),
-                                backgroundColor = Color(0x1AE4FF73),
-                                dotColor = NeonLime
+                                textColor = EmeraldGreen,
+                                borderColor = EmeraldGreen.copy(alpha = 0.4f),
+                                backgroundColor = EmeraldGreen.copy(alpha = 0.15f),
+                                dotColor = EmeraldGreen
                             )
                         }
 
@@ -225,7 +234,7 @@ fun BudgetScreen(
                                         .fillMaxWidth(0.2f)
                                         .fillMaxHeight()
                                         .clip(CircleShape)
-                                        .background(NeonLime)
+                                        .background(PhonePeLightPurple)
                                 )
                             }
                         }
@@ -262,9 +271,9 @@ fun BudgetScreen(
                                 }
                                 GlassBadge(
                                     text = "${savingsRateSlider.toInt()}% • ₹$simulatedSavings/mo",
-                                    textColor = NeonLime,
-                                    borderColor = Color(0x66E4FF73),
-                                    backgroundColor = Color(0x2EE4FF73)
+                                    textColor = PhonePeLightPurple,
+                                    borderColor = Color(0x338B5CF6),
+                                    backgroundColor = Color(0x1A8B5CF6)
                                 )
                             }
 
@@ -274,8 +283,8 @@ fun BudgetScreen(
                                 valueRange = 10f..50f,
                                 steps = 7,
                                 colors = SliderDefaults.colors(
-                                    thumbColor = NeonLime,
-                                    activeTrackColor = NeonLime,
+                                    thumbColor = PhonePeLightPurple,
+                                    activeTrackColor = PhonePeLightPurple,
                                     inactiveTrackColor = Color(0x408B5CF6)
                                 ),
                                 modifier = Modifier.fillMaxWidth().testTag("budget_savings_slider")
@@ -376,7 +385,7 @@ fun BudgetScreen(
                             Box(
                                 modifier = Modifier
                                     .clip(RoundedCornerShape(12.dp))
-                                    .background(NeonLime)
+                                    .background(PhonePePurple)
                                     .clickable { onSyncSupabase() }
                                     .padding(horizontal = 14.dp, vertical = 8.dp)
                                     .testTag("supabase_sync_button"),
@@ -385,7 +394,7 @@ fun BudgetScreen(
                                 Text(
                                     text = "Sync Now 🔄",
                                     fontFamily = HelveticaFontFamily,
-                                    color = Color.Black,
+                                    color = Color.White,
                                     fontSize = 11.sp,
                                     fontWeight = FontWeight.Bold
                                 )
@@ -578,13 +587,13 @@ fun BudgetScreen(
                             modifier = Modifier
                                 .size(22.dp)
                                 .clip(CircleShape)
-                                .background(NeonLime),
+                                .background(PhonePePurple),
                             contentAlignment = Alignment.Center
                         ) {
                             Text(
                                 text = "${i + 1}",
                                 fontFamily = HelveticaFontFamily,
-                                color = Color.Black,
+                                color = Color.White,
                                 fontSize = 10.sp,
                                 fontWeight = FontWeight.Bold
                             )
@@ -670,7 +679,7 @@ fun BudgetScreen(
                                 horizontalArrangement = Arrangement.SpaceBetween
                             ) {
                                 Text(text = label, fontFamily = HelveticaFontFamily, color = TextSecondary, fontSize = 12.sp, fontWeight = FontWeight.Normal)
-                                Text(text = value, fontFamily = HelveticaFontFamily, color = NeonLime, fontSize = 13.sp, fontWeight = FontWeight.Bold)
+                                Text(text = value, fontFamily = HelveticaFontFamily, color = SoftLavender, fontSize = 13.sp, fontWeight = FontWeight.Bold)
                             }
                             Spacer(modifier = Modifier.height(5.dp))
                             Box(
@@ -685,7 +694,7 @@ fun BudgetScreen(
                                         .fillMaxWidth(width)
                                         .fillMaxHeight()
                                         .clip(CircleShape)
-                                        .background(NeonLime)
+                                        .background(PhonePeLightPurple)
                                 )
                             }
                         }
@@ -715,24 +724,63 @@ fun BudgetScreen(
         }
 
         itemsIndexed(investTips) { _, tip ->
+            val assetVector = when (tip.asset.lowercase()) {
+                "nifty 50 index" -> Icons.Default.TrendingUp
+                "gold mutual funds" -> Icons.Default.Savings
+                "sovereign gold bonds" -> Icons.Default.Savings
+                "liquid funds" -> Icons.Default.AccountBalance
+                "us tech etf" -> Icons.Default.Language
+                "reits" -> Icons.Default.AccountBalance
+                else -> Icons.Default.Assessment
+            }
+            val assetBg = when (tip.risk.lowercase()) {
+                "low" -> Color(0xFF142822)
+                "moderate" -> Color(0xFF1E1E38)
+                else -> Color(0xFF281C1B)
+            }
+            val assetBorder = when (tip.risk.lowercase()) {
+                "low" -> Color(0x3310B981)
+                "moderate" -> Color(0x336366F1)
+                else -> Color(0x33F97316)
+            }
+            val assetTint = when (tip.risk.lowercase()) {
+                "low" -> Color(0xFFA7F3D0)
+                "moderate" -> Color(0xFFC7D2FE)
+                else -> Color(0xFFFED7AA)
+            }
+
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 20.dp, vertical = 4.dp)
                     .clip(RoundedCornerShape(18.dp))
-                    .background(Color(0x0DFFFFFF))
+                    .background(Color(0xFF151022))
                     .border(1.dp, BorderSubtle, RoundedCornerShape(18.dp))
                     .padding(14.dp)
             ) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Text(text = tip.icon, fontSize = 24.sp)
+                    Box(
+                        modifier = Modifier
+                            .size(42.dp)
+                            .clip(RoundedCornerShape(12.dp))
+                            .background(assetBg)
+                            .border(1.dp, assetBorder, RoundedCornerShape(12.dp)),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        androidx.compose.material3.Icon(
+                            imageVector = assetVector,
+                            contentDescription = tip.asset,
+                            tint = assetTint,
+                            modifier = Modifier.size(20.dp)
+                        )
+                    }
                     Spacer(modifier = Modifier.width(12.dp))
                     Column(modifier = Modifier.weight(1f)) {
                         Text(text = tip.asset, fontFamily = HelveticaFontFamily, color = Color.White, fontSize = 13.sp, fontWeight = FontWeight.SemiBold)
                         Text(text = "Risk: ${tip.risk}", fontFamily = HelveticaFontFamily, color = TextMuted, fontSize = 10.sp, fontWeight = FontWeight.Normal)
                     }
                     Column(horizontalAlignment = Alignment.End) {
-                        Text(text = tip.returnRate, fontFamily = HelveticaFontFamily, color = NeonLime, fontSize = 13.sp, fontWeight = FontWeight.Bold)
+                        Text(text = tip.returnRate, fontFamily = HelveticaFontFamily, color = EmeraldGreen, fontSize = 13.sp, fontWeight = FontWeight.Bold)
                         Text(text = tip.tag, fontFamily = HelveticaFontFamily, color = TextMuted, fontSize = 10.sp, fontWeight = FontWeight.Normal)
                     }
                 }

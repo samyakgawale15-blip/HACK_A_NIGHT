@@ -6,11 +6,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
 private val DarkColorScheme = darkColorScheme(
-    primary = NeonLime,
-    onPrimary = Color.Black,
-    primaryContainer = ElectricPurple,
+    primary = PhonePeLightPurple,
+    onPrimary = Color.White,
+    primaryContainer = PhonePePurple,
     onPrimaryContainer = Color.White,
-    secondary = ElectricPurple,
+    secondary = PhonePeAccentPurple,
     onSecondary = Color.White,
     background = ObsidianBlack,
     surface = DarkSurface,

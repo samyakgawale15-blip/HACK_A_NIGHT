@@ -28,34 +28,36 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.ui.theme.HelveticaFontFamily
 import com.example.ui.theme.NeonLime
+import com.example.ui.theme.PhonePeAccentPurple
 import com.example.ui.theme.PhonePePurple
+import com.example.ui.theme.SoftLavender
 import com.example.ui.theme.TextPrimary
 import com.example.ui.theme.TextSecondary
 
 /**
- * Vibrant Modern Container with rich dark violet obsidian surface,
- * subtle purple gradient accent, and crisp refined borders.
+ * Minimal Dark Glassmorphic Container with rich PhonePe obsidian surface,
+ * subtle dark purple tint, and clean hairline border.
  */
 @Composable
 fun GlassCard(
     modifier: Modifier = Modifier,
-    shape: Shape = RoundedCornerShape(20.dp),
-    backgroundColor: Color = Color(0xFF1E1730),
+    shape: Shape = RoundedCornerShape(18.dp),
+    backgroundColor: Color = Color(0xFF161124),
     gradientBrush: Brush? = Brush.verticalGradient(
         listOf(
-            Color(0xFF281E44),
-            Color(0xFF191329)
+            Color(0xFF1C142B),
+            Color(0xFF130E1F)
         )
     ),
     borderBrush: Brush = Brush.linearGradient(
         listOf(
-            Color(0x808B5CF6),
-            Color(0x40A855F7),
-            Color(0x306366F1)
+            Color(0x288B5CF6),
+            Color(0x14A855F7),
+            Color(0x10FFFFFF)
         )
     ),
     borderWidth: Dp = 1.dp,
-    elevation: Dp = 4.dp,
+    elevation: Dp = 0.dp,
     content: @Composable () -> Unit
 ) {
     Box(
@@ -65,8 +67,8 @@ fun GlassCard(
                     Modifier.shadow(
                         elevation = elevation,
                         shape = shape,
-                        ambientColor = Color(0x406739B7),
-                        spotColor = Color(0x60A855F7)
+                        ambientColor = Color(0x20000000),
+                        spotColor = Color(0x306739B7)
                     )
                 } else Modifier
             )
@@ -93,7 +95,7 @@ fun PhonePeGlassTile(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     badgeText: String? = null,
-    badgeColor: Color = NeonLime
+    badgeColor: Color = PhonePeAccentPurple
 ) {
     Column(
         modifier = modifier
@@ -107,13 +109,13 @@ fun PhonePeGlassTile(
             // Squircle Vibrant Icon Container
             Box(
                 modifier = Modifier
-                    .size(54.dp)
-                    .clip(RoundedCornerShape(18.dp))
+                    .size(52.dp)
+                    .clip(RoundedCornerShape(16.dp))
                     .background(
                         Brush.verticalGradient(
                             listOf(
-                                Color(0xFF352060),
-                                Color(0xFF1D1438)
+                                Color(0xFF261942),
+                                Color(0xFF17102B)
                             )
                         )
                     )
@@ -121,12 +123,11 @@ fun PhonePeGlassTile(
                         1.dp,
                         Brush.linearGradient(
                             listOf(
-                                Color(0x668B5CF6),
-                                Color(0x33A855F7),
-                                Color(0x22FFFFFF)
+                                Color(0x338B5CF6),
+                                Color(0x18FFFFFF)
                             )
                         ),
-                        RoundedCornerShape(18.dp)
+                        RoundedCornerShape(16.dp)
                     ),
                 contentAlignment = Alignment.Center
             ) {

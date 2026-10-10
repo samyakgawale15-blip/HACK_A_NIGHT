@@ -61,7 +61,10 @@ import com.example.ui.theme.GlassBorderGradient
 import com.example.ui.theme.HelveticaFontFamily
 import com.example.ui.theme.NeonLime
 import com.example.ui.theme.ObsidianBlack
+import com.example.ui.theme.PhonePeAccentPurple
 import com.example.ui.theme.PhonePeLightPurple
+import com.example.ui.theme.PhonePePurple
+import com.example.ui.theme.SoftLavender
 import com.example.ui.theme.TextMuted
 import com.example.ui.theme.TextPrimary
 import com.example.ui.theme.TextSecondary
@@ -232,7 +235,7 @@ fun OnboardingScreen(
                                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                                     shape = RoundedCornerShape(18.dp),
                                     colors = OutlinedTextFieldDefaults.colors(
-                                        focusedBorderColor = NeonLime,
+                                        focusedBorderColor = PhonePeLightPurple,
                                         unfocusedBorderColor = BorderMedium,
                                         focusedContainerColor = Color(0x14FFFFFF),
                                         unfocusedContainerColor = Color(0x0AFFFFFF)
@@ -538,22 +541,22 @@ fun OnboardingScreen(
                                         Row(
                                             modifier = Modifier
                                                 .clip(RoundedCornerShape(12.dp))
-                                                .background(Color(0x1ACCFF00))
-                                                .border(1.dp, NeonLime.copy(alpha = 0.4f), RoundedCornerShape(12.dp))
+                                                .background(Color(0x1A8B5CF6))
+                                                .border(1.dp, Color(0x338B5CF6), RoundedCornerShape(12.dp))
                                                 .padding(horizontal = 12.dp, vertical = 8.dp),
                                             verticalAlignment = Alignment.CenterVertically
                                         ) {
                                             Icon(
                                                 imageVector = Icons.Default.Badge,
                                                 contentDescription = "KYC Icon",
-                                                tint = NeonLime,
+                                                tint = PhonePeAccentPurple,
                                                 modifier = Modifier.size(16.dp)
                                             )
                                             Spacer(modifier = Modifier.width(8.dp))
                                             Text(
                                                 text = "A KYC Icon will be available on your Home Screen",
                                                 fontFamily = HelveticaFontFamily,
-                                                color = NeonLime,
+                                                color = SoftLavender,
                                                 fontSize = 11.sp,
                                                 fontWeight = FontWeight.SemiBold
                                             )
@@ -902,7 +905,7 @@ fun OnboardingScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .clip(RoundedCornerShape(16.dp))
-                            .background(NeonLime)
+                            .background(PhonePePurple)
                             .clickable { step = 7 }
                             .padding(vertical = 16.dp)
                             .testTag("onboarding_proceed_deep_kyc"),
@@ -912,15 +915,15 @@ fun OnboardingScreen(
                             Icon(
                                 imageVector = Icons.Default.AutoAwesome,
                                 contentDescription = "Deep KYC",
-                                tint = Color.Black,
+                                tint = Color.White,
                                 modifier = Modifier.size(18.dp)
                             )
                             Spacer(modifier = Modifier.width(8.dp))
                             Text(
                                 text = "Proceed to Deep Behavioral Analysis (+250 XP)",
                                 fontFamily = HelveticaFontFamily,
-                                color = Color.Black,
-                                fontSize = 14.sp,
+                                color = Color.White,
+                                fontSize = 13.sp,
                                 fontWeight = FontWeight.Bold
                             )
                         }
@@ -965,7 +968,7 @@ fun OnboardingScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .clip(RoundedCornerShape(16.dp))
-                            .background(if (isStepValid) NeonLime else Color(0x33E4FF73))
+                            .background(if (isStepValid) PhonePePurple else Color(0x288B5CF6))
                             .clickable(enabled = isStepValid) {
                                 when {
                                     step < 5 -> step += 1
@@ -1015,7 +1018,7 @@ fun OnboardingScreen(
                         Text(
                             text = if (step == 11) "Initialize Fully Verified AI Profile" else "Continue",
                             fontFamily = HelveticaFontFamily,
-                            color = Color.Black,
+                            color = Color.White,
                             fontSize = 15.sp,
                             fontWeight = FontWeight.Bold,
                             letterSpacing = (-0.2).sp
